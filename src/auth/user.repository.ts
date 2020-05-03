@@ -36,6 +36,7 @@ export class UserRepository extends Repository<User> {
 		return null;
 	}
 
+	// using a one way hash for the password
 	private async hashPassword(password: string, salt: string): Promise<string> {
 		return bcrypt.hash(password, salt);
 	}
