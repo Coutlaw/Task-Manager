@@ -1,7 +1,7 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { Task, TaskStatus } from './task.model';
 import * as uuid from 'uuid/v1';
-import { CreateTaskDto } from './dto/creat-task.dto';
+import { CreateTaskDto } from './dto/create-task.dto';
 import { GetTasksFilterDto } from './dto/get-tasks-filter.dto';
 
 @Injectable()
@@ -31,7 +31,14 @@ export class TasksService {
 	}
 
 	getTaskById(id: string): Task {
-		return this.tasks.find(task => task.id === id);
+		const found = this.tasks.find(task => task.id === id);
+
+		if (!found) {
+			// nest js will recognize this exception and handle the response for us.
+			throw new NotFoundException();
+		}
+
+		return found;
 	}
 
 	createTask(createTaskDto: CreateTaskDto): Task {
@@ -51,6 +58,11 @@ export class TasksService {
 
 	deleteTask(id: string): void {
 		// new array of tasks
+		// Not a great solution since we iterate twice, but it works
+		const found = this.getTaskById(id);
+		if (!found) {
+			throw new NotFoundException();
+		}
 		this.tasks = this.tasks.filter(task => task.id !== id );
 	}
 
