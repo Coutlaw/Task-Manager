@@ -1,4 +1,14 @@
+import { IsString, MinLength, MaxLength, Matches } from "class-validator";
+
 export class AuthCredentialsDto {
+	@IsString()
+	@MinLength(4)
+	@MaxLength(20)
 	username: string;
+
+	@IsString()
+	@MinLength(6)
+	@MaxLength(20)
+	@Matches(/(?:(?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$/, { message: 'password too week, must have 1 Capitol letter, 1 lowercase letter, and one number'})
 	password: string;
 }
