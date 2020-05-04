@@ -1,7 +1,6 @@
 import { Controller, Post, Body, ValidationPipe, UseGuards, Req } from '@nestjs/common';
 import { AuthCredentialsDto } from './dto/auth-credentials.dto';
 import { AuthService } from './auth.service';
-import { AuthGuard } from '@nestjs/passport';
 
 @Controller('auth')
 export class AuthController {
@@ -19,9 +18,10 @@ export class AuthController {
 		return this.authService.signIn(authCredentialsDto);
 	}
 
-	@Post('/test')
-	@UseGuards(AuthGuard())
-	test(@Req() req) {
-		console.log(req);
-	}
+	// This was a test to validate my decorator with auth
+	// @Post('/test')
+	// @UseGuards(AuthGuard())
+	// test(@GetUser() user: User) {
+	// 	console.log(user);
+	// }
 }
